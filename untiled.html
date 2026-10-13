@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Glow Guide – Personalized Skincare</title>
+    <style>
+      :root { --bg:#0f1320; --panel:#12172a; --text:#e6e9f2; --muted:#b6bdd1; --accent:#8b5cf6; --accent2:#22d3ee; --card:#131a33; --shadow:0 10px 30px rgba(0,0,0,.35) }
+      html.light { --bg:#fbfbfe; --panel:#fff; --text:#0f1320; --muted:#4b5563; --accent:#7c3aed; --accent2:#0891b2; --card:#fff; --shadow:0 8px 20px rgba(0,0,0,.08) }
+      *{box-sizing:border-box} html,body{height:100%}
+      body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(1200px 1200px at 10% 0%, rgba(139,92,246,.08), transparent 60%),radial-gradient(1000px 1000px at 100% 10%, rgba(34,211,238,.08), transparent 50%),var(--bg);line-height:1.6}
+      .container{width:min(1100px,92%);margin:0 auto}
+      .site-header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,rgba(0,0,0,.25),transparent);backdrop-filter:blur(8px)}
+      .header-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+      .brand{display:flex;align-items:center;gap:10px}.brand-title{margin:0;font-size:20px;letter-spacing:.3px}.logo{font-size:20px;transform:translateY(2px)}
+      .theme-toggle{border:0;background:var(--panel);color:var(--text);padding:10px 12px;border-radius:12px;box-shadow:var(--shadow);cursor:pointer}
+      .hero{position:relative;overflow:hidden;padding:48px 0 28px}
+      .hero-inner{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center}
+      .hero-title{font-size:clamp(26px,3.4vw,44px);line-height:1.15;margin:0 0 10px}
+      .hero-subtitle{color:var(--muted);margin:0 0 22px}
+      .skin-form{display:flex;gap:12px;flex-wrap:wrap}
+      .skin-form select{appearance:none;border:1px solid rgba(255,255,255,.15);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:12px;min-width:260px;box-shadow:var(--shadow)}
+      .btn{border:0;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:12px 16px;border-radius:12px;font-weight:700;box-shadow:var(--shadow);cursor:pointer}
+      .hero-art{position:relative;height:280px}
+      .blob{position:absolute;border-radius:50%;filter:blur(18px);opacity:.75;animation:float 8s ease-in-out infinite}
+      .b1{width:240px;height:240px;background:radial-gradient(circle at 30% 30%, #8b5cf6, transparent 60%);left:10%;top:18%;animation-delay:-1s}
+      .b2{width:160px;height:160px;background:radial-gradient(circle at 70% 40%, #22d3ee, transparent 60%);right:6%;top:10%;animation-delay:-3s}
+      .b3{width:200px;height:200px;background:radial-gradient(circle at 50% 50%, #34d399, transparent 60%);right:24%;bottom:-10%;animation-delay:-5s}
+      @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+      .results{padding:28px 0 64px}
+      .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+      .card{grid-column:span 12;background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+      .card h3{margin:0 0 8px;font-size:18px}
+      .list{margin:10px 0 0;padding-left:18px}
+      .pill{display:inline-flex;gap:8px;padding:8px 10px;border-radius:999px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);font-size:13px}
+      .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+      .btn.secondary{background:transparent;border:1px solid rgba(139,92,246,.45);color:var(--text)}
+      .btn.icon{display:inline-flex;align-items:center;gap:8px}
+      .tabs{display:flex;flex-direction:column;gap:10px}
+      .tablist{display:flex;gap:8px;flex-wrap:wrap}
+      .tab{border:1px solid rgba(255,255,255,.15);background:var(--panel);color:var(--text);padding:8px 12px;border-radius:999px;cursor:pointer}
+      .tab[aria-selected="true"]{outline:2px solid var(--accent)}
+      .tabpanel{display:none}
+      .tabpanel[aria-hidden="false"]{display:block}
+      .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+      @media (min-width:720px){.gallery{grid-template-columns:repeat(4,1fr)}}
+      .media-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden}
+      .media-card img{width:100%;height:140px;object-fit:cover;display:block}
+      .media-card .cap{padding:8px 10px;font-size:13px}
+      .feedback{display:flex;flex-direction:column;gap:8px}
+      .feedback textarea{width:100%;min-height:90px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:var(--panel);color:var(--text);padding:10px}
+      .feedback .small{color:var(--muted);font-size:12px}
+      .notes{margin:8px 0 0;padding-left:18px}
+      .site-footer{border-top:1px solid rgba(255,255,255,.08);background:linear-gradient(0deg, rgba(0,0,0,.25), transparent)}
+      .visually-hidden{position:absolute !important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+      @media (max-width:860px){.hero-inner{grid-template-columns:1fr}.hero-art{height:200px}}
+      @media (min-width:720px){.split-6{grid-column:span 6}.split-12{grid-column:span 12}}
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand"><span class="logo" aria-hidden="true">✨</span><h1 class="brand-title">Glow Guide</h1></div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <h2 class="hero-title">Personalized skincare, simplified.</h2>
+            <p class="hero-subtitle">Pick your skin type to get care, precautions, products, and gentle home remedies.</p>
+            <form id="skinForm" class="skin-form" autocomplete="off">
+              <label for="skinType" class="visually-hidden">Choose skin type</label>
+              <select id="skinType" name="skinType" required>
+                <option value="" disabled selected>Select your skin type</option>
+                <option value="normal">Normal</option>
+                <option value="oily">Oily</option>
+                <option value="dry">Dry</option>
+                <option value="combination">Combination</option>
+                <option value="sensitive">Sensitive</option>
+                <option value="acne_prone">Acne‑prone</option>
+                <option value="mature">Mature/Aging</option>
+              </select>
+              <button type="submit" class="btn">Get my routine</button>
+            </form>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+          </div>
+        </div>
+      </section>
+      <section id="results" class="results container" aria-live="polite" aria-busy="false"></section>
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <p class="muted">Educational info only. Patch test; consult a dermatologist for conditions.</p>
+      </div>
+    </footer>
+    <script>
+      const skinData = {
+        normal: { title: 'Normal Skin',
+          morning: ['Gentle cleanse','Moisturizer with ceramides or squalane','Broad‑spectrum SPF 30+'],
+          evening: ['Gentle cleanse','Moisturizer','Mild exfoliation 1–2×/week (PHA/LA 1–5%)'],
+          precautions: ['Avoid over‑exfoliation','Patch test new actives','Use fragrance‑free if sensitive'],
+          products: [ ['CeraVe Hydrating Cleanser','Cleanser','ceramides'], ['The Ordinary Squalane','Moisturizer/Oil','lightweight'], ['La Roche‑Posay Anthelios SPF 50','Sunscreen','non‑greasy'] ],
+          natural: ['Aloe vera gel (pure)','Rose water mist','Jojoba oil (few drops)'],
+          home: ['Oat flour + yogurt mask (10 min)'],
+          best: { title: 'Gentle consistency wins', why: ['Keep a simple 3‑step routine daily','Exfoliate only once or twice per week to avoid barrier damage'] },
+          recVideo: { title: 'Beginner daily routine walkthrough', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' },
+          videos: [ ['How to do an oatmeal yogurt mask','https://www.youtube.com/results?search_query=oatmeal+yogurt+face+mask+how+to'] ],
+          gallery: [
+            ['https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop','Moisturizer','Light cream'],
+            ['https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?q=80&w=800&auto=format&fit=crop','Aloe vera','Soothing gel'],
+            ['https://images.unsplash.com/photo-1571781923300-5d1ad50c31b4?q=80&w=800&auto=format&fit=crop','Sunscreen','Daily SPF'],
+            ['https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?q=80&w=800&auto=format&fit=crop','Rose water','Hydrating mist']
+          ],
+          avoid: ['Harsh sulfates (SLS)','High alcohol toners'] },
+        oily: { title: 'Oily Skin',
+          morning: ['Gel cleanse','Niacinamide 2–5%','Oil‑free moisturizer','SPF 30+'],
+          evening: ['Gel cleanse','BHA 0.5–2% (2–3×/week)','Light moisturizer'],
+          precautions: ['Do not over‑cleanse','Avoid heavy occlusives daytime','Introduce BHA slowly'],
+          products: [ ['COSRX Low pH Good Morning','Cleanser','gentle gel'], ["Paula's Choice 2% BHA","Exfoliant","pore care"], ['Neutrogena Hydro Boost Gel','Moisturizer','oil‑free'], ['Biore UV Aqua Rich SPF 50','Sunscreen','light'] ],
+          natural: ['Green tea toner','Aloe + niacinamide','Alcohol‑free witch hazel (sparingly)'],
+          home: ['Honey + green tea mask (10–15 min)','Multani mitti + rose water (weekly)'],
+          best: { title: 'Targeted BHA on T‑zone', why: ['Use BHA 2–3×/week only on oily areas','Balance with light gel moisturizer to prevent rebound oil'] },
+          recVideo: { title: 'Apply BHA safely (demo)', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' },
+          videos: [ ['Green tea honey mask tutorial','https://www.youtube.com/results?search_query=green+tea+honey+mask+face'], ['How to use clay mask safely','https://www.youtube.com/results?search_query=clay+mask+how+to'] ],
+          gallery: [
+            ['https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=800&auto=format&fit=crop','Gel Cleanser','Low pH'],
+            ['https://images.unsplash.com/photo-1615529162926-1c969f8c7f5b?q=80&w=800&auto=format&fit=crop','BHA Exfoliant','Salicylic acid'],
+            ['https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?q=80&w=800&auto=format&fit=crop','Oil‑free Moisturizer','Lightweight'],
+            ['https://images.unsplash.com/photo-1585238342028-4bbc0b92353a?q=80&w=800&auto=format&fit=crop','SPF','Daily sunscreen']
+          ],
+          avoid: ['Coconut oil on face','Thick butter balms by day'] },
+        dry: { title: 'Dry Skin',
+          morning: ['Creamy cleanse','HA serum on damp skin','Ceramide‑rich moisturizer','SPF 30+'],
+          evening: ['Creamy cleanse','Rich moisturizer','Optional occlusive at night'],
+          precautions: ['Limit exfoliation to 1×/week','Avoid high alcohol','Use humidifier'],
+          products: [ ['CeraVe Hydrating Cleanser','Cleanser','non‑stripping'], ['The Ordinary HA + B5','Serum','hydration'], ['Cicaplast Baume B5','Moisturizer','barrier support'], ['Supergoop! Unseen','Sunscreen','comfortable'] ],
+          natural: ['Squalane','Shea butter (night)','Oat milk spritz'],
+          home: ['Oat + honey mask (10 min)','Milk compress (5 min)'],
+          best: { title: 'Hydrate then seal', why: ['Apply HA on damp skin then seal with a ceramide cream','Avoid hot water and harsh cleansers to protect barrier'] },
+          recVideo: { title: 'Dry skin hydration layering', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' },
+          videos: [ ['Dry skin night routine','https://www.youtube.com/results?search_query=dry+skin+night+routine+ceramides'] ],
+          gallery: [
+            ['https://images.unsplash.com/photo-1556228453-bfcb4cdf2aa9?q=80&w=800&auto=format&fit=crop','Cream Cleanser','Non‑stripping'],
+            ['https://images.unsplash.com/photo-1547887538-0471e8e59c49?q=80&w=800&auto=format&fit=crop','HA Serum','Hydration'],
+            ['https://images.unsplash.com/photo-1540569014015-19a7be504e3a?q=80&w=800&auto=format&fit=crop','Rich Moisturizer','Ceramides'],
+            ['https://images.unsplash.com/photo-1556228578-8fb36f1a7f8b?q=80&w=800&auto=format&fit=crop','SPF','Protection']
+          ],
+          avoid: ['BPO without guidance','Fragrance‑heavy creams'] },
+        combination: { title: 'Combination Skin',
+          morning: ['Gentle cleanse','Light moisturizer','SPF 30+'],
+          evening: ['Gentle cleanse','BHA on T‑zone 2–3×/week','Gel on T‑zone, cream on dry areas'],
+          precautions: ['Gel for T‑zone, cream for dry areas','Add actives one at a time'],
+          products: [ ['Krave Matcha Hemp','Cleanser','balanced'], ['TO Niacinamide 10%','Serum','oil control'], ['Clinique Moisture Surge','Moisturizer','gel‑cream'], ['Skin1004 Centella SPF','Sunscreen','calming'] ],
+          natural: ['Jojoba oil (spot)','Aloe gel','Centella'],
+          home: ['Yogurt + honey on cheeks; clay only on T‑zone'],
+          best: { title: 'Multi‑moisturize smartly', why: ['Use lightweight gel on T‑zone and richer cream on dry cheeks','Spot treat with BHA only where needed'] },
+          recVideo: { title: 'Multi‑moisturizing in action', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' },
+          videos: [ ['Multi‑moisturizing tips','https://www.youtube.com/results?search_query=multi+moisturizing+combination+skin'] ],
+          gallery: [
+            ['https://images.unsplash.com/photo-1585238341808-7f9dc5f5f9b4?q=80&w=800&auto=format&fit=crop','Cleanser','Gentle'],
+            ['https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800&auto=format&fit=crop','Serum','Niacinamide'],
+            ['https://images.unsplash.com/photo-1556228578-96f7b7f02d80?q=80&w=800&auto=format&fit=crop','Gel‑Cream','Balanced'],
+            ['https://images.unsplash.com/photo-1610901343513-3252d22dc7f2?q=80&w=800&auto=format&fit=crop','SPF','Centella']
+          ],
+          avoid: ['Overusing clay on dry areas','Over‑exfoliation'] },
+        sensitive: { title: 'Sensitive Skin',
+          morning: ['Ultra‑gentle cleanse','Barrier‑repair moisturizer','Mineral SPF 30+'],
+          evening: ['Ultra‑gentle cleanse','Barrier‑repair moisturizer'],
+          precautions: ['Avoid fragrance & essential oils','One new product per 2 weeks','Prefer mineral SPF'],
+          products: [ ['Vanicream Gentle Cleanser','Cleanser','very mild'], ['Avene Tolerance Emulsion','Moisturizer','minimalist'], ['EltaMD UV Physical SPF 41','Sunscreen','tinted mineral'] ],
+          natural: ['Squalane','Colloidal oatmeal','Centella'],
+          home: ['Oat water compress','Aloe gel (patch test)'],
+          best: { title: 'Minimalist routine', why: ['Stick to 3 steps to reduce triggers','Patch test every new product for 48 hours'] },
+          recVideo: { title: 'Barrier-first sensitive care', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' },
+          videos: [ ['How to patch test skincare','https://www.youtube.com/results?search_query=how+to+patch+test+skincare'] ],
+          gallery: [
+            ['https://images.unsplash.com/photo-1614854262311-9f06a8a8f68a?q=80&w=800&auto=format&fit=crop','Gentle Cleanser','Non‑irritating'],
+            ['https://images.unsplash.com/photo-1616509091215-57e5389c6dbd?q=80&w=800&auto=format&fit=crop','Barrier Cream','Ceramides'],
+            ['https://images.unsplash.com/photo-1585238341810-2290d651d4d0?q=80&w=800&auto=format&fit=crop','Mineral SPF','Zinc oxide'],
+            ['https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?q=80&w=800&auto=format&fit=crop','Oats','Soothing']
+          ],
+          avoid: ['Strong acids/retinoids initially','Peppermint/tea tree oils'] },
+        acne_prone: { title: 'Acne‑prone Skin',
+          morning: ['Gentle foaming cleanse','Niacinamide or azelaic 10%','Light, non‑comedogenic moisturizer','SPF 30+ non‑comedogenic'],
+          evening: ['Gentle foaming cleanse','BHA 0.5–2% (or azelaic 10%)','Light moisturizer'],
+          precautions: ['No picking; use hydrocolloid patches','One active at a time','See derm if severe'],
+          products: [ ['Effaclar Gel','Cleanser','oil control'], ["Paula's Choice 2% BHA","Exfoliant","blackheads"], ['TO Azelaic 10%','Treatment','post‑acne marks'], ['EltaMD UV Clear SPF 46','Sunscreen','niacinamide'] ],
+          natural: ['Green tea extract','Niacinamide','Zinc PCA'],
+          home: ['Honey dab (spot)','Aloe + niacinamide gel'],
+          best: { title: 'Steady actives, gentle base', why: ['Alternate BHA and azelaic instead of stacking','Use hydrocolloid patches instead of picking'] },
+          recVideo: { title: 'Spot treatment do’s and don’ts', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' },
+          videos: [ ['How to use BHA safely','https://www.youtube.com/results?search_query=how+to+use+BHA+salicylic+acid'], ['Hydrocolloid patch guide','https://www.youtube.com/results?search_query=how+to+use+hydrocolloid+patch'] ],
+          gallery: [
+            ['https://images.unsplash.com/photo-1585238342058-4bd3b0fb1923?q=80&w=800&auto=format&fit=crop','Foaming Cleanser','Gentle'],
+            ['https://images.unsplash.com/photo-1585238342074-3a4f9c22f0e2?q=80&w=800&auto=format&fit=crop','BHA','Exfoliant'],
+            ['https://images.unsplash.com/photo-1522335789203-9ea1a1f8a5d1?q=80&w=800&auto=format&fit=crop','Azelaic Acid','Treatment'],
+            ['https://images.unsplash.com/photo-1585238342089-b6a70d820ee7?q=80&w=800&auto=format&fit=crop','SPF','UV Clear']
+          ],
+          avoid: ['Coconut oil','Harsh scrubs'] },
+        mature: { title: 'Mature/Aging Skin',
+          morning: ['Gentle cleanse','Hydration: HA + peptides','SPF 50'],
+          evening: ['Gentle cleanse','Retinoid (1–2×/week start, then increase)','Ceramide/squalane moisturizer'],
+          precautions: ['Introduce retinoids slowly & buffer','Daily sunscreen is key','Avoid harsh scrubs'],
+          products: [ ['Toleriane Cleanser','Cleanser','gentle'], ['Multi‑Peptide Serum','Serum','firmness'], ['Adapalene 0.1% (OTC)','Retinoid','night'], ['CeraVe PM','Moisturizer','ceramides'], ['ISDIN Eryfotona Actinica SPF 50+','Sunscreen','DNA repair enzymes'] ],
+          natural: ['Squalane','Bakuchiol','CoQ10'],
+          home: ['Aloe + squalane massage (2–3 min)','Green tea toner'],
+          best: { title: 'SPF daily + patient retinoid use', why: ['Build retinoids slowly to maintain tolerance','Daily SPF preserves gains and protects barrier'] },
+          recVideo: { title: 'Retinoid beginner routine', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' },
+          videos: [ ['How to start retinoids gently','https://www.youtube.com/results?search_query=start+retinoid+skin+retinol+how+to'] ],
+          gallery: [
+            ['https://images.unsplash.com/photo-1603664114474-5d8a6a538a6e?q=80&w=800&auto=format&fit=crop','Peptide Serum','Firming'],
+            ['https://images.unsplash.com/photo-1616440178483-9a2b3f9d3a75?q=80&w=800&auto=format&fit=crop','Retinoid','Night care'],
+            ['https://images.unsplash.com/photo-1542856391-010fb87dcfed?q=80&w=800&auto=format&fit=crop','Moisturizer','Barrier'],
+            ['https://images.unsplash.com/photo-1505577058444-a3dab90d4253?q=80&w=800&auto=format&fit=crop','SPF 50','Sun care']
+          ],
+          avoid: ['Over‑exfoliation','Skipping SPF'] }
+      };
+      function el(tag, cls, kids){ const n=document.createElement(tag); if(cls) n.className=cls; (kids||[]).forEach(k=>n.appendChild(typeof k==='string'?document.createTextNode(k):k)); return n; }
+      function list(items){ const u=el('ul','list'); items.forEach(t=>u.appendChild(el('li','',[t]))); return u; }
+      function products(items){ const u=el('ul','list'); items.forEach(p=>u.appendChild(el('li','',[`${p[0]} — ${p[1]}${p[2]?` (${p[2]})`:''}`]))); return u; }
+      function card(title, node, size='split-6'){ return el('div',`card ${size}`,[el('h3','',[title]), node]); }
+      function toolbar(title){
+        const bar=el('div','toolbar',[]);
+        const h=el('h3','',[title]); h.style.margin='0'; h.style.marginRight='auto'; h.style.fontSize='18px';
+        const copyBtn=el('button','btn secondary icon',[svg('copy'), 'Copy routine']); copyBtn.type='button'; copyBtn.addEventListener('click',copyRoutine);
+        const shareBtn=el('button','btn secondary icon',[svg('share'), 'Share']); shareBtn.type='button'; shareBtn.addEventListener('click',shareLink);
+        bar.appendChild(h); bar.appendChild(copyBtn); bar.appendChild(shareBtn);
+        return bar;
+      }
+      function svg(kind){
+        const span=document.createElement('span'); span.setAttribute('aria-hidden','true'); span.style.fontSize='16px';
+        span.textContent = kind==='copy' ? '📋' : '🔗'; return span;
+      }
+      function tabs(morning, evening){
+        const wrap=el('div','tabs',[]);
+        const listbox=el('div','tablist',[]); listbox.setAttribute('role','tablist');
+        const tabA=el('button','tab',['Morning']); tabA.id='tab-m'; tabA.setAttribute('role','tab'); tabA.setAttribute('aria-selected','true'); tabA.setAttribute('aria-controls','panel-m');
+        const tabB=el('button','tab',['Evening']); tabB.id='tab-e'; tabB.setAttribute('role','tab'); tabB.setAttribute('aria-selected','false'); tabB.setAttribute('aria-controls','panel-e');
+        listbox.appendChild(tabA); listbox.appendChild(tabB);
+        const panelA=el('div','tabpanel',[list(morning)]); panelA.id='panel-m'; panelA.setAttribute('role','tabpanel'); panelA.setAttribute('aria-hidden','false'); panelA.setAttribute('aria-labelledby','tab-m');
+        const panelB=el('div','tabpanel',[list(evening)]); panelB.id='panel-e'; panelB.setAttribute('role','tabpanel'); panelB.setAttribute('aria-hidden','true'); panelB.setAttribute('aria-labelledby','tab-e');
+        function select(isA){ tabA.setAttribute('aria-selected', String(isA)); tabB.setAttribute('aria-selected', String(!isA)); panelA.setAttribute('aria-hidden', String(!isA)); panelB.setAttribute('aria-hidden', String(isA)); }
+        tabA.addEventListener('click',()=>select(true)); tabB.addEventListener('click',()=>select(false));
+        wrap.appendChild(listbox); wrap.appendChild(panelA); wrap.appendChild(panelB); return wrap;
+      }
+      function gallery(items){
+        const g=el('div','gallery',[]);
+        items.forEach(([src,alt,label])=>{
+          const card=el('div','media-card',[]);
+          const img=new Image(); img.src=src; img.alt=alt; card.appendChild(img);
+          card.appendChild(el('div','cap',[label || alt])); g.appendChild(card);
+        });
+        return g;
+      }
+      function links(items){
+        const ul=el('ul','list',[]);
+        items.forEach(([title,url])=>{
+          const a=document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; a.textContent=title;
+          ul.appendChild(el('li','',[a]));
+        });
+        return ul;
+      }
+      function copyRoutine(){
+        const type=currentType(); if(!type) return;
+        const d=skinData[type];
+        const text=[ `${d.title} Routine`, '', 'Morning:', ...d.morning.map(i=>`- ${i}`), '', 'Evening:', ...d.evening.map(i=>`- ${i}`), '', 'Precautions:', ...d.precautions.map(i=>`- ${i}`) ].join('\n');
+        navigator.clipboard?.writeText(text).then(()=>toast('Copied routine')).catch(()=>toast('Copy failed'));
+      }
+      function shareLink(){
+        const url=new URL(location.href); url.hash = `type=${currentType()}`;
+        const shareData={ title:'Glow Guide', text:'My personalized skincare routine', url:url.toString() };
+        if(navigator.share){ navigator.share(shareData).catch(()=>{}); }
+        else { navigator.clipboard?.writeText(url.toString()).then(()=>toast('Link copied')).catch(()=>toast('Copy failed')); }
+      }
+      function toast(msg){ const t=el('div','', [msg]); t.style.position='fixed'; t.style.bottom='16px'; t.style.left='50%'; t.style.transform='translateX(-50%)'; t.style.background='rgba(0,0,0,.6)'; t.style.color='#fff'; t.style.padding='8px 12px'; t.style.borderRadius='8px'; t.style.zIndex='9999'; document.body.appendChild(t); setTimeout(()=>t.remove(), 1600); }
+      function currentType(){ return (new URL(location.href).hash.match(/type=([^&]+)/)||[])[1] || document.getElementById('skinType').value; }
+      function render(key){
+        const res=document.getElementById('results'); const info=skinData[key]; if(!info) return;
+        res.setAttribute('aria-busy','true'); res.innerHTML='';
+        const grid=el('div','grid');
+        grid.appendChild(card('', toolbar(info.title), 'split-12'));
+        const careTabs = tabs(info.morning || [], info.evening || []);
+        grid.appendChild(card('Daily Care', careTabs));
+        grid.appendChild(card('Precautions',list(info.precautions)));
+        grid.appendChild(card('Recommended Products',products(info.products),'split-12'));
+        grid.appendChild(card('Healthy & Natural Options',list(info.natural)));
+        grid.appendChild(card('Home Remedies',list(info.home)));
+        if (info.best) {
+          const notes=el('ul','notes',[]); (info.best.why||[]).forEach(n=>notes.appendChild(el('li','',[n])));
+          grid.appendChild(card(`Best Procedure – ${info.best.title}`, notes));
+        }
+        if (info.recVideo) {
+          const box=el('div','',[]);
+          const v=document.createElement('video'); v.controls=true; v.playsInline=true; v.style.width='100%'; v.src=info.recVideo.src; v.setAttribute('aria-label', info.recVideo.title);
+          const cap=el('div','small',[info.recVideo.title]); cap.style.marginTop='6px'; cap.style.color='var(--muted)';
+          box.appendChild(v); box.appendChild(cap);
+          grid.appendChild(card('Recommended Video (no YouTube)', box, 'split-12'));
+        }
+        if (info.videos && info.videos.length) {
+          grid.appendChild(card('How-to Videos', links(info.videos), 'split-12'));
+        }
+        if (info.gallery && info.gallery.length) {
+          grid.appendChild(card('Inspiration & Products', gallery(info.gallery), 'split-12'));
+        }
+        const tags=el('div',''); info.avoid.forEach(a=>tags.appendChild(el('span','pill',[a])));
+        grid.appendChild(card('Use With Caution / Avoid',tags));
+        res.appendChild(grid); res.setAttribute('aria-busy','false');
+      }
+      document.getElementById('skinForm').addEventListener('submit',e=>{
+        e.preventDefault(); const v=document.getElementById('skinType').value; if(!v) return;
+        location.hash = `type=${v}`;
+        render(v); document.getElementById('results').scrollIntoView({behavior:'smooth'});
+      });
+      const root=document.documentElement, toggle=document.getElementById('themeToggle');
+      function theme(t){ if(t==='light'){ root.classList.add('light'); toggle.textContent='🌙'; } else { root.classList.remove('light'); toggle.textContent='🌞'; } }
+      theme(localStorage.getItem('theme')||'dark');
+      toggle.addEventListener('click',()=>{ const next=root.classList.contains('light')?'dark':'light'; localStorage.setItem('theme',next); theme(next); });
+      // Deep link support
+      const hashType = currentType(); if(hashType && skinData[hashType]){ document.getElementById('skinType').value = hashType; render(hashType); }
+      // Feedback form (saves to localStorage) appended after results render
+      function feedbackForm(type){
+        const wrap=el('div','feedback',[]);
+        const ta=document.createElement('textarea'); ta.placeholder='Share your experience, what worked well, or issues…';
+        ta.value = localStorage.getItem(`feedback:${type}`)||'';
+        const save=el('button','btn secondary icon',[svg('copy'),'Save feedback']); save.type='button';
+        save.addEventListener('click',()=>{ localStorage.setItem(`feedback:${type}`, ta.value); toast('Feedback saved'); });
+        wrap.appendChild(ta); wrap.appendChild(el('div','small',['Stored locally on this device only.'])); wrap.appendChild(save); return wrap;
+      }
+      // Monkey-patch render to inject feedback at the end
+      const _render = render;
+      render = function(key){ _render(key); const res=document.getElementById('results'); res.appendChild(card('Your Review & Feedback', feedbackForm(key), 'split-12')); };
+    </script>
+  </body>
+</html>
